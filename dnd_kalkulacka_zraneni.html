@@ -124,7 +124,7 @@
                 {{calculateCriticalChance(criticalRange) * 100}} %
             </td>
             <td>
-                {{roundNumber(calculateCriticalTotalDamageInceasePercent(criticalRange, criticalMultipl), 1) }} %
+                {{roundNumber(calculateCriticalTotalDamageInceasePercent(criticalRange, criticalMultipl) * 100, 1) }} %
             </td>
             <th>
                 <u>{{roundNumber(getTotalAverageCriticalDamage(), 1)}}</u>
