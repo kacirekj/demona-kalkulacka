@@ -5,12 +5,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://kit.fontawesome.com/1e8b9b6262.js" crossOrigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://classless.de/classless.css">
 
     <title>Démona - kalkulačka zranění</title>
 </head>
 
 <style>
+    :root, html[data-theme='light'] {
+        --width: 60rem;
+    }
+
+    fieldset select, input:not([type=checkbox]):not([type=radio]) {
+        display: block;
+        width: 100%;
+        margin: 0 0 0rem;
+    }
+
+
     td:has(input),
     td:has(select),
     td:has(.card),
@@ -19,7 +30,7 @@
     }
 
     input {
-        margin-bottom: 0px;
+        margin: 0rem 0rem 0rem;
     }
 </style>
 
@@ -39,7 +50,7 @@
     <p>
         Vidíme, že vypočtené tzv. "Základní průměrné zranění" vyjde 10. Jedná se o součet všech zranění pokud
         by nám ani jednou nepadlo kritické zranění.
-        </p>
+    </p>
     <p>
         V tabulce níž už vidíme "Celkové průměrné zranění", které nás zajímá nejvíc, neboť zahrnuje kritický útok.
         To představuje průměrné zranění, které bychom udíleli s každým zásahem do slámeného panáka s
@@ -56,7 +67,10 @@
         <tr>
             <th>
                 Rozsah zranění <i class="fa-regular fa-circle-question"
-                                  title='Napište přesně např. "1-8" pokud má zranění rozsah, nebo napiště přesně např. "5" pokud je zranění fixní'></i>
+                                  title='Napište přesně např. "1-8" pokud má zranění rozsah, nebo napiště přesně např. "5" pokud je zranění fixní. Pokud zranění je např. 3d4, napište rozsah "3-12"'></i>
+            </th>
+            <th>
+                Popisek
             </th>
             <th>
                 Průměrné zranění <i class="fa-regular fa-circle-question"
@@ -67,16 +81,19 @@
         <tbody>
         <tr v-for="inputDamage, index in inputDamages" :key="index">
             <td>
-                <input type="text" v-model="inputDamages[index]">
+                <input type="text" v-model="inputDamages[index][0]">
             </td>
             <td>
-                {{calculateAverageDamage(inputDamage)}}
+                <input type="text" v-model="inputDamages[index][1]">
+            </td>
+            <td>
+                {{calculateAverageDamage(inputDamages[index][0])}}
             </td>
         </tr>
         </tbody>
         <tfoot>
         <tr>
-            <th>Celkem</th>
+            <th colspan="2">Celkem</th>
             <th>{{getTotalAverageDamage()}}</th>
         </tr>
         </tfoot>
@@ -102,8 +119,8 @@
                    title='Kolik procent úderů bude mít v průměru kritický.'></i>
             </th>
             <th>
-                Zvýšení základního </br>  kritického zranění [%] <i class="fa-regular fa-circle-question"
-                                                                    title='Např. kritický pro kukri "18-20/x2" zvedne základní průměrné zranění o 15%.'></i>
+                Zvýšení základního  </br> prům. zranění [%] <i class="fa-regular fa-circle-question"
+                                                               title='Např. kritický pro kukri "18-20/x2" zvedne základní průměrné zranění o 15%.'></i>
             </th>
             <th>
                 <b>Celkové</b>                 </br> průměrné zranění
@@ -136,10 +153,10 @@
     <h3><b>Reálné</b> průměrné zranění za kolo</h3>
     <table>
         <thead>
-            <th>AC Vašeho nepřítele</th>
+        <th>AC Vašeho nepřítele</th>
         </thead>
         <tbody>
-            <td><input type="number" v-model="oponentAc"></td>
+        <td><input type="number" v-model="oponentAc"></td>
         </tbody>
     </table>
     <table>
@@ -165,41 +182,83 @@
         </tr>
         </thead>
         <tbody>
-            <tr v-for="inputAb, index in inputAbs" :key="index">
-                <td>
-                    {{index+1}}.
-                </td>
-                <td>
-                    <input type="number" v-model="inputAbs[index]"/>
-                </td>
-                <td>
-                    {{roundNumber(calculateChanceToHit(oponentAc, inputAbs[index]) * 100, 1)}} %
-                </td>
-                <td>
-                    {{ roundNumber(getTotalAverageCriticalDamage() * calculateChanceToHit(oponentAc, inputAbs[index]), 1)}}
-                </td>
-            </tr>
+        <tr v-for="inputAb, index in inputAbs" :key="index">
+            <td>
+                {{index+1}}.
+            </td>
+            <td>
+                <input type="number" v-model="inputAbs[index]"/>
+            </td>
+            <td>
+                {{roundNumber(calculateChanceToHit(oponentAc, inputAbs[index]) * 100, 1)}} %
+            </td>
+            <td>
+                {{ roundNumber(getTotalAverageCriticalDamage() * calculateChanceToHit(oponentAc, inputAbs[index]), 1)}}
+            </td>
+        </tr>
         </tbody>
         <tfoot>
-            <tr>
-                <th colspan="3">
-                    Celkové průměrné zranění z 1 kolo:
-                </th>
-                <th>
-                    {{roundNumber(getTotalAverageDamagePerRoundToOponent(), 1)}}
-                </th>
-            </tr>
+        <tr>
+            <th colspan="3">
+                Celkové průměrné zranění z 1 kolo:
+            </th>
+            <th>
+                {{roundNumber(getTotalAverageDamagePerRoundToOponent(), 1)}}
+            </th>
+        </tr>
         </tfoot>
     </table>
 
     <h3>
         Shrnutí
     </h3>
-    <p>
-        Vaše postavička uděluje do sláměného panáka bez obrany v průměru celkem {{getTotalAverageCriticalDamage()}} bodů zranění.
-        Do nepřátelské postavy s AC {{oponentAc}} uděluje za 1 kolo v průměru celkem {{getTotalAverageDamagePerRoundToOponent()}}
-        bodů zranění.
-    </p>
+
+    <table>
+        <body>
+        <tr>
+            <td>
+                Rozpis zranění na zbrani
+            </td>
+            <td>
+                {{inputDamages.filter((dmg, idx) => dmg[0] && idx <= 4).map(dmg => dmg[0] + " (" + dmg[1] + ")").join(", ")}}
+                </br>
+                {{inputDamages.filter((dmg, idx) => dmg[0] && idx > 4).map(dmg => dmg[0] + " (" + dmg[1] + ")").join(", ")}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Součet zranění na zbrani
+            </td>
+            <td>
+                {{getTotalAverageDamage()}} ({{criticalRange}}-20/x{{criticalMultipl}})
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Zranění vč. kritického
+            </td>
+            <td>
+                {{roundNumber(getTotalAverageCriticalDamage(), 1)}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                AB za kolo
+            </td>
+            <td>
+                +{{inputAbs.filter(iAbs => iAbs > 0).join(", +")}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Zranění za kolo ( AC {{oponentAc}} )
+            </td>
+            <td>
+                {{roundNumber(getTotalAverageDamagePerRoundToOponent(), 1)}}
+            </td>
+        </tr>
+        </body>
+    </table>
 
     <h3>Autor</h3>
     <p>
@@ -222,8 +281,8 @@
     let app = new Vue({
         el: '#vuaApp',
         data: {
-            inputDamages: ["1-6", "1-8", "2", "", "", "", "", ""],
-            inputAbs: [20,15,10,5,0,0,0,0,0],
+            inputDamages: [["1-6", "Kukri"], ["1-8", "Element"], ["2", "Síla"], ["",""],  ["",""],  ["",""],  ["",""],  ["",""],  ["",""],  ["",""]],
+            inputAbs: [20, 15, 10, 5, 0, 0, 0, 0, 0],
             criticalRange: 15,
             criticalMultipl: 2,
             criticalChangePercent: 0,
@@ -255,7 +314,7 @@
                  * (20 - (AB - AC) + 1) / 20 = hit chance
                  * but boundaries : max hit chance is 95%, min hit chance is 5%
                  */
-                if(attackerAb <= 0) {
+                if (attackerAb <= 0) {
                     return 0;
                 }
                 let hitChance = (20 - (oponentAc - attackerAb) + 1) / 20;
@@ -266,7 +325,7 @@
             getTotalAverageDamagePerRoundToOponent() {
                 const totalDamageWithCritical = this.getTotalAverageCriticalDamage();
                 let sumOfDamagesPerRound = 0;
-                for(let inpuptAb of this.inputAbs) {
+                for (let inpuptAb of this.inputAbs) {
                     const chanceToHit = this.calculateChanceToHit(this.oponentAc, inpuptAb);
                     const damage = totalDamageWithCritical * chanceToHit;
                     sumOfDamagesPerRound += damage;
@@ -276,7 +335,7 @@
             getTotalAverageDamage() {
                 let sum = 0;
                 for (damage of this.inputDamages) {
-                    sum += this.calculateAverageDamage(damage);
+                    sum += this.calculateAverageDamage(damage[0]);
                 }
                 return sum;
             },
@@ -295,7 +354,7 @@
                 return (part0 + part1) / 2;
             },
             roundNumber(number, digits) {
-                return Math.round(number * 10*digits) / 10 * digits;
+                return Math.round(number * 10) / 10;
             }
         },
         async beforeMount() {
