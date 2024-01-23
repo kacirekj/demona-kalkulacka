@@ -178,10 +178,37 @@
         <h3>Zranění za kolo do reálného soupeře</h3>
         <table>
             <thead>
-            <th>AC Vašeho nepřítele</th>
+            <th>Atributy vašeho protivníka</th>
+            <th></th>
             </thead>
             <tbody>
-            <td><input type="number" v-model="oponentAc"></td>
+            <tr>
+                <td>
+                    Obranné číslo - AC
+                </td>
+                <td>
+                    <input type="number" v-model="oponentAc">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Redukce zranění <i class="fa-regular fa-circle-question"
+                                       title="Redukce zranění např. 3/- způsobí, že protivník sníží zrnanění každého úspěšného útoku o 3 body."></i>
+                </td>
+                <td>
+                    <input type="number" v-model="oponentDamageReduction">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Epický únik / Odrážení šípů <i class="fa-regular fa-circle-question"
+                                                   title='Epický únik způsobí, že 1. útok v každém kole nepřítele nikdy nezasáhne. Stejně tak funguje feat Arrow deflection.'></i>
+
+                </td>
+                <td>
+                    <input type="checkbox" v-model="oponentEpicDodge">
+                </td>
+            </tr>
             </tbody>
         </table>
         <table>
@@ -218,7 +245,12 @@
                     {{roundNumber(calculateChanceToHit(oponentAc, inputAbs[index]) * 100, 1)}} %
                 </td>
                 <td>
-                    {{ roundNumber(getTotalAverageDamageWithMassiveCriticals() * calculateChanceToHit(oponentAc, inputAbs[index]), 1)}}
+                    <span v-if="oponentEpicDodge && index === 0">
+                        0
+                    </span>
+                    <span v-else>
+                        {{ roundNumber((getTotalAverageDamageWithMassiveCriticals() - oponentDamageReduction) * calculateChanceToHit(oponentAc, inputAbs[index]), 1)}}
+                    </span>
                 </td>
             </tr>
             </tbody>
@@ -292,7 +324,7 @@
             </tr>
             <tr>
                 <td>
-                    Zranění za kolo ( AC {{oponentAc}} )
+                    Zranění za kolo ( AC {{oponentAc}}{{oponentEpicDodge ? ", únik" : ""}}{{oponentDamageReduction > 0 ? ", redu. " + oponentDamageReduction + "/-" : ""}} )
                 </td>
                 <td>
                     {{roundNumber(getTotalAverageDamagePerRoundToOponent(), 1)}}
@@ -312,8 +344,8 @@
         <h3>Licence</h3>
         <p>
             Veškeré zdrojové kódy jsou přístupné ve "View Page Source" nebo na Github.com. Software můžete dále modifikovat a šířit, nezapomeňte mě však prosím uvézt jako autora či spoluautora.
-             Děkuji.
-            </p>
+            Děkuji.
+        </p>
     </article>
 </div>
 
@@ -332,6 +364,8 @@
             criticalMultipl: 2,
             criticalChangePercent: 0,
             oponentAc: 30,
+            oponentDamageReduction: 0,
+            oponentEpicDodge: false,
         },
         methods: {
             // Getters
@@ -355,12 +389,20 @@
                 return this.massiveCriticals.map(m => this.calculateAverageDamage(m))
                     .reduce((sum, a) => sum + a, 0);
             },
+
             getTotalAverageDamagePerRoundToOponent() {
-                const totalDamageWithCritical = this.getTotalAverageDamageWithMassiveCriticals();
+                let totalDamageWithCritical = this.getTotalAverageDamageWithMassiveCriticals();
+                totalDamageWithCritical = totalDamageWithCritical - this.oponentDamageReduction;
                 let sumOfDamagesPerRound = 0;
-                for (let inpuptAb of this.inputAbs) {
+                for (const [index, inpuptAb] of this.inputAbs.entries()) {
+                    if (index == 0 && this.oponentEpicDodge) {
+                        continue;
+                    }
+
                     const chanceToHit = this.calculateChanceToHit(this.oponentAc, inpuptAb);
                     const damage = totalDamageWithCritical * chanceToHit;
+
+
                     sumOfDamagesPerRound += damage;
                 }
                 return sumOfDamagesPerRound;
@@ -394,6 +436,7 @@
                 let hitChance = (20 - (oponentAc - attackerAb) + 1) / 20;
                 hitChance = hitChance > 0.95 ? 0.95 : hitChance;
                 hitChance = hitChance < 0.05 ? 0.05 : hitChance;
+
                 return hitChance;
             },
 
