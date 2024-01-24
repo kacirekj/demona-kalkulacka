@@ -21,7 +21,6 @@
         margin: 0 0 0rem;
     }
 
-
     td:has(input),
     td:has(select),
     td:has(.card),
@@ -31,6 +30,10 @@
 
     input {
         margin: 0rem 0rem 0rem;
+    }
+
+    td, th {
+        white-space: normal;
     }
 </style>
 
@@ -45,17 +48,18 @@
             Umožňuje porovnání různých buildů.
         </p>
         <p>
-            Jako příklad je do kalkulačky předvyplňeno znranění postavičky,
-            která používá Kukri, má sílu 14 (mod. síly je +2), a disponuje featem Vylepšený
-            kritický pro Kukri.
-            Na Kukri dále přítomno Masivní kritický "1-8". Nejyšší AB postavičký je 20, a disponuje celkem 4 útoky
+            Jako příklad je do kalkulačky předvyplňeno zranění postavičky,
+            která používá v každé ruce Kukri, má sílu 22 (mod. síly je +6), a disponuje featy Vylepšený
+            kritický pro Kukri, Obouručnost, Boj dvěma zbraněmi a Vylepšený boj 2 zbraněmi.
+            Na Kukri je přítomen Masivní kritický "1-8". Nejyšší AB postavičký je 20, a disponuje celkem 6 útoky
             za kolo. Útočí do nepřátelského NPC které má AC 30.
         </p>
         <h2>Vstupní údaje</h2>
 
         <table>
             <h3>Zranění na zbrani</h3>
-            Jedná se o základní rozpis zranění uvedeného na zbrani, vč. bonusu ze síly a z featů či kouzel. Nepatří sem však zákeřný útok nebo masivní kritický.
+            Jedná se o základní rozpis zranění uvedeného na zbrani, vč. bonusu ze síly a z featů či kouzel. Nepatří sem však zákeřný útok nebo masivní kritický. Používá-li vaše postavička 2 zbraně,
+            musíte si ručně snížit bonus ze síly.
             <thead>
             <tr>
                 <th>
@@ -77,7 +81,15 @@
                     <input type="text" v-model="inputDamages[index][0]">
                 </td>
                 <td>
-                    <input type="text" v-model="inputDamages[index][1]">
+                    <span v-if="index < 2">
+                        {{inputDamages[index][1]}}
+
+                        <i v-if="index === 1" class="fa-regular fa-circle-question"
+                                                      title='Zde si ručně snižte zranění, používáte-li off-hand zbraň. V tomto případě je totiž bonus ze síly poloviční. Máte-li 4 útoky hlavní zbraní a 2 útoky off-hand zbraní a sílu máte 12, snižte ji o 1/6 tedy o 2 body.'></i>
+                    </span>
+                    <span v-else>
+                        <input type="text" v-model="inputDamages[index][1]">
+                    </span>
                 </td>
                 <td>
                     {{calculateAverageDamage(inputDamages[index][0])}}
@@ -277,9 +289,7 @@
                     Rozpis zranění na zbrani
                 </td>
                 <td>
-                    {{inputDamages.filter((dmg, idx) => dmg[0] && idx <= 4).map(dmg => dmg[0] + " (" + dmg[1] + ")").join(", ")}}
-                    </br>
-                    {{inputDamages.filter((dmg, idx) => dmg[0] && idx > 4).map(dmg => dmg[0] + " (" + dmg[1] + ")").join(", ")}}
+                    {{inputDamages.filter(dmg => dmg[0]).map(dmg => dmg[0] + " (" + dmg[1] + ")").join(", ")}}
                 </td>
             </tr>
             <tr>
@@ -357,8 +367,8 @@
     let app = new Vue({
         el: '#vuaApp',
         data: {
-            inputDamages: [["1-4", "Kukri"], ["1-8", "Element"], ["2", "Síla"], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""]],
-            inputAbs: [20, 15, 10, 5, 0, 0, 0, 0, 0],
+            inputDamages: [["6", "Mod. síly"], ["-1", "Off-hand postih síly"], ["1-4", "Kukri"], ["1-8", "Element"], ["2", "Spec. na zbraň"], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""]],
+            inputAbs: [20, 15, 10, 5, 20, 15, 0, 0, 0, 0],
             massiveCriticals: ["1-8", "", ""],
             criticalRange: 15,
             criticalMultipl: 2,
@@ -445,7 +455,7 @@
                 if (!damageString) {
                     return 0;
                 }
-                if (!damageString.includes("-")) {
+                if (!damageString.includes("-") || damageString.charAt(0) === '-') {
                     return Number(damageString);
                 }
                 const parts = damageString.split("-");
