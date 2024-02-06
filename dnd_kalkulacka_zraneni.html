@@ -21,6 +21,7 @@
         margin: 0 0 0rem;
     }
 
+
     td:has(input),
     td:has(select),
     td:has(.card),
@@ -30,10 +31,6 @@
 
     input {
         margin: 0rem 0rem 0rem;
-    }
-
-    td, th {
-        white-space: normal;
     }
 </style>
 
@@ -59,7 +56,34 @@
         <table>
             <h3>Zranění na zbrani</h3>
             Jedná se o základní rozpis zranění uvedeného na zbrani, vč. bonusu ze síly a z featů či kouzel. Nepatří sem však zákeřný útok nebo masivní kritický. Používá-li vaše postavička 2 zbraně,
-            musíte si ručně snížit bonus ze síly.
+            musíte si ručně snížit bonus ze síly (zprůměrovat bonus ze síly) a to následovně:
+            <table>
+                <thead>
+                <tr>
+                    <th>Utoků za kolo</th>
+                    <th>Z toho off-hand útoků</th>
+                    <th>Postih</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>6</td>
+                    <td>2</td>
+                    <td>1/6 x Mod. síly</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>2</td>
+                    <td>1/7 x Mod. síly</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>2</td>
+                    <td>1/8 x Mod. síly</td>
+                </tr>
+                </tbody>
+            </table>
+            <table>
             <thead>
             <tr>
                 <th>
@@ -162,7 +186,7 @@
             <thead>
             <tr>
                 <th>Rozsah zranění</th>
-                <th>Zranění v případě kritického</th>
+                <th>Zranění udělené silným kritickým</th>
             </tr>
             </thead>
             <tbody>
@@ -187,7 +211,39 @@
             </tfoot>
         </table>
 
-        <h3>Zranění za kolo do reálného soupeře</h3>
+            <h3>Zranění se zákeřným útokem</h3>
+            Zákeřný útok se přídává ke zranění, avšak není násoben v případě kritického zranění.
+            <table>
+                <thead>
+                <tr>
+                    <th>Zranění kritickým</th>
+                    <th></th>
+                    <th>Zranění udělené zákeřným</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <input type="number" v-model="sneakAttack1d6Count">
+                    </td>
+                    <td>
+                        d6
+                    </td>
+                    <td>
+                        {{getSneakAttackDamage()}}
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Celkové průměrné zranění:</th>
+                    <th><u>{{roundNumber(getTotalAverageDamageWithMassiveCriticalsAndSneakAttack(), 1)}}</u></th>
+                </tr>
+                </tfoot>
+            </table>
+
+
+            <h3>Zranění za kolo do reálného soupeře</h3>
         <table>
             <thead>
             <th>Atributy vašeho protivníka</th>
@@ -261,7 +317,7 @@
                         0
                     </span>
                     <span v-else>
-                        {{ roundNumber((getTotalAverageDamageWithMassiveCriticals() - oponentDamageReduction) * calculateChanceToHit(oponentAc, inputAbs[index]), 1)}}
+                        {{ roundNumber((getTotalAverageDamageWithMassiveCriticalsAndSneakAttack() - oponentDamageReduction) * calculateChanceToHit(oponentAc, inputAbs[index]), 1)}}
                     </span>
                 </td>
             </tr>
@@ -289,15 +345,17 @@
                     Rozpis zranění na zbrani
                 </td>
                 <td>
-                    {{inputDamages.filter(dmg => dmg[0]).map(dmg => dmg[0] + " (" + dmg[1] + ")").join(", ")}}
+                    {{inputDamages.filter((dmg, idx) => dmg[0] && idx <= 4).map(dmg => dmg[0] + " (" + dmg[1] + ")").join(", ")}}
+                    </br>
+                    {{inputDamages.filter((dmg, idx) => dmg[0] && idx > 4).map(dmg => dmg[0] + " (" + dmg[1] + ")").join(", ")}}
                 </td>
             </tr>
             <tr>
                 <td>
-                    Kritický
+                    Přidané zranění
                 </td>
                 <td>
-                    {{criticalRange}}-20/x{{criticalMultipl}}, masivní +{{getMassiveCriticalsDamageSum()}}
+                    kritický {{criticalRange}}-20/x{{criticalMultipl}}, masivní kritický +{{getMassiveCriticalsDamageSum()}} {{sneakAttack1d6Count != 0 ? ", zákeřný " + getSneakAttackDamage() : ""}}
                 </td>
             </tr>
             <tr>
@@ -324,12 +382,20 @@
                     {{roundNumber(getTotalAverageCriticalDamage(), 1)}}
                 </td>
             </tr>
-            <tr>
+            <tr v-if="getMassiveCriticalsDamageSum() != 0">
                 <td>
                     Zranění vč. masivních kritických
                 </td>
                 <td>
                     {{roundNumber(getTotalAverageDamageWithMassiveCriticals(), 1)}}
+                </td>
+            </tr>
+            <tr v-if="getSneakAttackDamage() != 0">
+                <td>
+                    Zranění vč. zákeřného útoku
+                </td>
+                <td>
+                    {{roundNumber(getTotalAverageDamageWithMassiveCriticalsAndSneakAttack(), 1)}}
                 </td>
             </tr>
             <tr>
@@ -370,6 +436,7 @@
             inputDamages: [["6", "Mod. síly"], ["-1", "Off-hand postih síly"], ["1-4", "Kukri"], ["1-8", "Element"], ["2", "Spec. na zbraň"], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""]],
             inputAbs: [20, 15, 10, 5, 20, 15, 0, 0, 0, 0],
             massiveCriticals: ["1-8", "", ""],
+            sneakAttack1d6Count: 0,
             criticalRange: 15,
             criticalMultipl: 2,
             criticalChangePercent: 0,
@@ -395,13 +462,19 @@
                 sum += this.getMassiveCriticalsDamageSum() * this.calculateCriticalChance(this.criticalRange);
                 return sum;
             },
+            getTotalAverageDamageWithMassiveCriticalsAndSneakAttack() {
+                return this.getSneakAttackDamage() + this.getTotalAverageDamageWithMassiveCriticals();
+            },
             getMassiveCriticalsDamageSum() {
                 return this.massiveCriticals.map(m => this.calculateAverageDamage(m))
                     .reduce((sum, a) => sum + a, 0);
             },
+            getSneakAttackDamage() {
+                return (this.sneakAttack1d6Count*1 + 6*this.sneakAttack1d6Count) / 2;
+            },
 
             getTotalAverageDamagePerRoundToOponent() {
-                let totalDamageWithCritical = this.getTotalAverageDamageWithMassiveCriticals();
+                let totalDamageWithCritical = this.getTotalAverageDamageWithMassiveCriticalsAndSneakAttack();
                 totalDamageWithCritical = totalDamageWithCritical - this.oponentDamageReduction;
                 let sumOfDamagesPerRound = 0;
                 for (const [index, inpuptAb] of this.inputAbs.entries()) {
