@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="cs" xmlns="http://www.w3.org/1999/html">
-
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://kit.fontawesome.com/1e8b9b6262.js" crossOrigin="anonymous"></script>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css"
+    />
     <link rel="stylesheet" href="https://classless.de/classless.css">
 
     <title>D&D - kalkulačka zranění</title>
+    <meta charset="UTF-8">
 </head>
 
 <style>
     :root, html[data-theme='light'] {
-        --width: 60rem;
+        --grid: 2.5rem;
+        --width: calc(var(--grid)*24);
     }
 
     fieldset select, input:not([type=checkbox]):not([type=radio]) {
@@ -21,26 +25,104 @@
         margin: 0 0 0rem;
     }
 
+    input {
+        margin: 0rem 0rem 0rem;
+    }
+
+    h1+h2, h2+h3, h3+h4, h4+h5 {
+        margin-top: calc(var(--grid)*1);
+        padding-top: 0;
+    }
+
+    h1, h2, h3, h4 {
+        line-height: calc(var(--grid)*2);
+        height: calc(var(--grid)*2);;
+        font-size: calc(var(--grid)*1);
+        font-weight: 500;
+        margin: 0;
+        padding: 0;
+        font-variant: normal;
+    }
+
+    h2 {
+        margin-top: calc(var(--grid)*1);
+        line-height: calc(var(--grid)*1);
+        height: calc(var(--grid)*1);
+        font-size: calc(var(--grid)*0.85);
+    }
+
+    h3 {
+        margin-top: calc(var(--grid)*1);
+        line-height: calc(var(--grid)*1);
+        height: calc(var(--grid)*1);
+        font-size: calc(var(--grid)*0.7);
+    }
+
+    h4 {
+        margin-top: calc(var(--grid)*1);
+        line-height: calc(var(--grid)*1);
+        height: calc(var(--grid)*1);
+        font-size: calc(var(--grid)*0.55);
+    }
+
+    p {
+        line-height: calc(var(--grid)*0.666);
+        margin-top: calc(var(--grid)*0.5);
+        /*margin-bottom: calc(var(--grid)*0.8);*/
+        padding: 0;
+        /*background: red;*/
+    }
+
+    table {
+        margin: 0;
+        margin-top: calc(var(--grid)*0.5);
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    body {
+        padding: 0;
+    }
+
+    .height-grid {
+        min-height: calc(var(--grid)*1);
+    }
+
+    th, td {
+        height: calc(var(--grid)*1);
+        min-height: calc(var(--grid)*1);
+        max-height: calc(var(--grid)*1);
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+        padding-left: calc(var(--grid)*0.2);
+        /*border: 1px solid black;*/
+    }
 
     td:has(input),
     td:has(select),
     td:has(.card),
     th:has(input) {
-        padding: 0.1rem 0.2rem 0.1rem 0;
+        /*padding: 0.1rem 0.2rem 0.1rem 0;*/
+        padding: 0;
+        padding-left: calc(var(--grid)*0.2);
     }
 
-    input {
-        margin: 0rem 0rem 0rem;
+    td input, th input {
+        margin: 0;
+        height: calc(var(--grid)*0.8);
     }
+
 </style>
 
 <body>
 <div id="vuaApp" class="container">
     <article>
+        <div class="height-grid"></div>
         <h1>D&D - Kalkulačka průměrného zranění</h1>
         <h2>Úvod</h2>
         <p>
-            <img src="dwarf.png" align="right">
+            <img src="dwarf.png" align="right" style="height: calc(var(--grid)*14.5)" />
             Tato kalkulačka je obecně použitelná pro výpočet průměrného zranění zbraně podle pravidel D&D.
             Umožňuje porovnání různých buildů.
         </p>
@@ -52,14 +134,18 @@
             za kolo. Útočí do nepřátelského NPC které má AC 30.
         </p>
         <h2>Vstupní údaje</h2>
-
-        <table>
-            <h3>Zranění na zbrani</h3>
+        <h3>Zranění na zbrani</h3>
+        <p>
             Jedná se o základní rozpis zranění uvedeného na zbrani, vč. bonusu ze síly a z featů či kouzel. Nepatří sem
             však zákeřný útok nebo masivní kritický. Používá-li vaše postavička 2 zbraně,
             musíte si ručně snížit bonus ze síly (zprůměrovat bonus ze síly) a to následovně:
-
+        </p>
             <table>
+                <colgroup>
+                    <col style="width: 33.3333%;" />
+                    <col style="width: 33.3333%;" />
+                    <col style="width: 33.3333%;" />
+                </colgroup>
                 <thead>
                 <tr>
                     <th>
@@ -106,11 +192,18 @@
 
 
             <h4>Pomocná tabulka pro zjištění postihu síly při držení offhand zbraně</h4>
+            <p>
             Pokud útočník drží v hlavní ruce jednoruční zbraň, tak se ke zranění aplikuje celý modifikátor síly útočníka.
             Tedy má-li útočník sílu 22, přidá se ke zranění 6 bodů. V případě offhand zbraně je však ke zranění
             přidaná pouze polovina modifikátoru síly, tedy ze síly 22 by to byly jen 3 body. Pokud tedy používáte
             zbraň v druhé ruce, přidejte si do výše uvedené tabulky ručně postih síly.
+            </p>
             <table>
+                <colgroup>
+                    <col style="width: 33.3333%;" />
+                    <col style="width: 33.3333%;" />
+                    <col style="width: 33.3333%;" />
+                </colgroup>
                 <thead>
                 <tr>
                     <th>Utoků za kolo</th>
@@ -139,8 +232,18 @@
 
 
             <h3>Zranění s kritickým úderem</h3>
+            <p>
             Kritický úder zvedá základní zranění o nějakou procentuální část. Nezvedá však např. sneak attack.
+            </p>
             <table>
+                <colgroup>
+                    <col style="width: 25%;" />
+                    <col style="width: 8.33333%;" />
+                    <col style="width: 16.66666%;" />
+                    <col style="width: 16.66666%;" />
+                    <col style="width: 16.66666%;" />
+                    <col style="width: 16.66666%;" />
+                </colgroup>
                 <thead>
                 <tr>
                     <th>Rozsah </br> kritického <i class="fa-regular fa-circle-question"
@@ -191,10 +294,16 @@
                 </tbody>
             </table>
             <h3>Zranění se silným kritickým</h3>
+            <p>
             Silné kritické zranění se přidává ke zranění v případě, že nastane kritický úder. Silný kritický může být
             přítomen
             jako vylepšení na zbrani, nebo ho můžeme získat z featu Overhelming Critical. Tyto se následně sčítají.
+            </p>
             <table>
+                <colgroup>
+                    <col style="width: 50%;" />
+                    <col style="width: 50%;" />
+                </colgroup>
                 <thead>
                 <tr>
                     <th>Rozsah zranění</th>
@@ -224,8 +333,15 @@
             </table>
 
             <h3>Zranění se zákeřným útokem</h3>
+            <p>
             Zákeřný útok se přídává ke zranění, avšak není násoben v případě kritického zranění.
+            </p>
             <table>
+                <colgroup>
+                    <col style="width: 35%;" />
+                    <col style="width: 15%;" />
+                    <col style="width: 50.3333%;" />
+                </colgroup>
                 <thead>
                 <tr>
                     <th>Zranění kritickým</th>
@@ -249,6 +365,7 @@
                 <tfoot>
                 <tr>
                     <th>Celkové průměrné zranění:</th>
+                    <th></th>
                     <th><u>{{ roundNumber(getTotalAverageDamageIncludingCriticalAndMassiveCriticalAndSneakAttack(), 1) }}</u></th>
                 </tr>
                 </tfoot>
@@ -257,6 +374,10 @@
 
             <h3>Zranění za kolo do reálného soupeře</h3>
             <table>
+                <colgroup>
+                    <col style="width: 50%;" />
+                    <col style="width: 50%;" />
+                </colgroup>
                 <thead>
                 <th>Atributy vašeho protivníka</th>
                 <th></th>
@@ -292,6 +413,12 @@
                 </tbody>
             </table>
             <table>
+                <colgroup>
+                    <col style="width: 25%;" />
+                    <col style="width: 25%;" />
+                    <col style="width: 25%;" />
+                    <col style="width: 25%;" />
+                </colgroup>
                 <thead>
                 <tr>
                     <th>
@@ -439,6 +566,7 @@
                 modifikovat a šířit, nezapomeňte mě však prosím uvézt jako autora či spoluautora.
                 Děkuji.
             </p>
+            <div class="height-grid"></div>
     </article>
 </div>
 
@@ -578,5 +706,4 @@
 
 </script>
 
-</body>
 </html>
