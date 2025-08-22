@@ -8,6 +8,12 @@
             href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css"
     />
     <link rel="stylesheet" href="https://classless.de/classless.css">
+    <link
+            rel="icon"
+            type="image/png"
+            href="favicon.png"
+            sizes="any"
+    />
 
     <title>D&D - kalkulačka zranění</title>
     <meta charset="UTF-8">
@@ -16,7 +22,7 @@
 <style>
     :root, html[data-theme='light'] {
         --grid: 2.5rem;
-        --width: calc(var(--grid)*24);
+        --width: calc(var(--grid) * 20);
     }
 
     fieldset select, input:not([type=checkbox]):not([type=radio]) {
@@ -29,15 +35,15 @@
         margin: 0rem 0rem 0rem;
     }
 
-    h1+h2, h2+h3, h3+h4, h4+h5 {
-        margin-top: calc(var(--grid)*1);
+    h1 + h2, h2 + h3, h3 + h4, h4 + h5 {
+        margin-top: calc(var(--grid) * 0.5);
         padding-top: 0;
     }
 
     h1, h2, h3, h4 {
-        line-height: calc(var(--grid)*2);
-        height: calc(var(--grid)*2);;
-        font-size: calc(var(--grid)*1);
+        line-height: calc(var(--grid) * 2);
+        height: calc(var(--grid) * 2);;
+        font-size: calc(var(--grid) * 1);
         font-weight: 500;
         margin: 0;
         padding: 0;
@@ -45,29 +51,29 @@
     }
 
     h2 {
-        margin-top: calc(var(--grid)*1);
-        line-height: calc(var(--grid)*1);
-        height: calc(var(--grid)*1);
-        font-size: calc(var(--grid)*0.85);
+        margin-top: calc(var(--grid) * 1);
+        line-height: calc(var(--grid) * 1);
+        height: calc(var(--grid) * 1);
+        font-size: calc(var(--grid) * 0.85);
     }
 
     h3 {
-        margin-top: calc(var(--grid)*1);
-        line-height: calc(var(--grid)*1);
-        height: calc(var(--grid)*1);
-        font-size: calc(var(--grid)*0.7);
+        margin-top: calc(var(--grid) * 1);
+        line-height: calc(var(--grid) * 1);
+        height: calc(var(--grid) * 1);
+        font-size: calc(var(--grid) * 0.7);
     }
 
     h4 {
-        margin-top: calc(var(--grid)*1);
-        line-height: calc(var(--grid)*1);
-        height: calc(var(--grid)*1);
-        font-size: calc(var(--grid)*0.55);
+        margin-top: calc(var(--grid) * 1);
+        line-height: calc(var(--grid) * 1);
+        height: calc(var(--grid) * 1);
+        font-size: calc(var(--grid) * 0.55);
     }
 
     p {
-        line-height: calc(var(--grid)*0.666);
-        margin-top: calc(var(--grid)*0.5);
+        line-height: calc(var(--grid) * 0.666);
+        margin-top: calc(var(--grid) * 0.5);
         /*margin-bottom: calc(var(--grid)*0.8);*/
         padding: 0;
         /*background: red;*/
@@ -75,7 +81,7 @@
 
     table {
         margin: 0;
-        margin-top: calc(var(--grid)*0.5);
+        margin-top: calc(var(--grid) * 0.5);
         width: 100%;
         border-collapse: collapse;
     }
@@ -85,32 +91,59 @@
     }
 
     .height-grid {
-        min-height: calc(var(--grid)*1);
+        min-height: calc(var(--grid) * 1);
     }
 
     th, td {
-        height: calc(var(--grid)*1);
-        min-height: calc(var(--grid)*1);
-        max-height: calc(var(--grid)*1);
+        height: calc(var(--grid) * 1);
+        min-height: calc(var(--grid) * 1);
+        max-height: calc(var(--grid) * 1);
         box-sizing: border-box;
         padding: 0;
         margin: 0;
-        padding-left: calc(var(--grid)*0.2);
-        /*border: 1px solid black;*/
+        padding-left: calc(var(--grid) * 0.1);
+        padding-right: calc(var(--grid) * 0.1);
+        border: 1px solid var(--cmed);
+
     }
 
     td:has(input),
     td:has(select),
     td:has(.card),
-    th:has(input) {
+    th:has(input)
+    {
         /*padding: 0.1rem 0.2rem 0.1rem 0;*/
         padding: 0;
-        padding-left: calc(var(--grid)*0.2);
+        padding-left: calc(var(--grid) * 0.1);
+        padding-right: calc(var(--grid) * 0.1);
     }
 
-    td input, th input {
+    td input, th input, td button, th button {
         margin: 0;
-        height: calc(var(--grid)*0.8);
+        height: calc(var(--grid) * 0.8);
+    }
+
+    .highlight-text {
+        color: #f66900;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 18px;
+    }
+
+    .row {
+        padding: 0;
+        margin: 0;
+        border: none;
+        width: 100%;
+    }
+
+    .col, .col-1, .col-2, .col-3 {
+        padding: 0;
+        margin: 0;
+    }
+
+    .row [class^="col"] {
+        padding: 0;
     }
 
 </style>
@@ -122,7 +155,7 @@
         <h1>D&D - Kalkulačka průměrného zranění</h1>
         <h2>Úvod</h2>
         <p>
-            <img src="dwarf.png" align="right" style="height: calc(var(--grid)*14.5)" />
+            <img src="dwarf.png" align="right" style="height: calc(var(--grid)*14.5)"/>
             Tato kalkulačka je obecně použitelná pro výpočet průměrného zranění zbraně podle pravidel D&D.
             Umožňuje porovnání různých buildů.
         </p>
@@ -140,433 +173,508 @@
             však zákeřný útok nebo masivní kritický. Používá-li vaše postavička 2 zbraně,
             musíte si ručně snížit bonus ze síly (zprůměrovat bonus ze síly) a to následovně:
         </p>
-            <table>
-                <colgroup>
-                    <col style="width: 33.3333%;" />
-                    <col style="width: 33.3333%;" />
-                    <col style="width: 33.3333%;" />
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>
-                        Rozsah zranění <i class="fa-regular fa-circle-question"
-                                          title='Napište přesně např. "1-8" pokud má zranění rozsah, nebo napiště přesně např. "5" pokud je zranění fixní. Pokud zranění je např. 3d4, napište rozsah "3-12"'></i>
-                    </th>
-                    <th>
-                        Popisek
-                    </th>
-                    <th>
-                        Průměrné zranění <i class="fa-regular fa-circle-question"
-                                            title='Pokud jste zadali hodnotu např. "1-8" potom průměrné zranění je rovno 4.5'></i>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="inputDamage, index in inputDamages" :key="index">
-                    <td>
-                        <input type="text" v-model="inputDamages[index][0]">
-                    </td>
-                    <td>
+        <table>
+            <colgroup>
+                <col style="width: 33.3333%;"/>
+                <col style="width: 33.3333%;"/>
+                <col style="width: 33.3333%;"/>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>
+                    Rozsah zranění <i class="fa-regular fa-circle-question"
+                                      title='Napište přesně např. "1-8" pokud má zranění rozsah, nebo napiště přesně např. "5" pokud je zranění fixní. Pokud zranění je např. 3d4, napište rozsah "3-12"'></i>
+                </th>
+                <th>
+                    Popisek
+                </th>
+                <th>
+                    Průměrné zranění <i class="fa-regular fa-circle-question"
+                                        title='Pokud jste zadali hodnotu např. "1-8" potom průměrné zranění je rovno 4.5'></i>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="inputDamage, index in inputDamages" :key="index">
+                <td>
+                    <input type="text" v-model="inputDamages[index][0]">
+                </td>
+                <td>
                     <span v-if="index < 2">
                         {{ inputDamages[index][1] }}
 
                         <i v-if="index === 1" class="fa-regular fa-circle-question"
                            title='Zde si ručně snižte zranění, používáte-li off-hand zbraň. V tomto případě je totiž bonus ze síly poloviční. Máte-li 4 útoky hlavní zbraní a 2 útoky off-hand zbraní a sílu máte 12, snižte ji o 1/6 tedy o 2 body.'></i>
                     </span>
-                        <span v-else>
+                    <span v-else>
                         <input type="text" v-model="inputDamages[index][1]">
                     </span>
-                    </td>
-                    <td>
-                        {{ calculateAverageDamageFromString(inputDamages[index][0]) }}
-                    </td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <th colspan="2">Suma</th>
-                    <th><u>{{ getTotalAverageDamage() }}</u></th>
-                </tr>
-                </tfoot>
-            </table>
+                </td>
+                <td>
+                    {{ calculateAverageDamageFromString(inputDamages[index][0]) }}
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th colspan="2">Suma:</th>
+                <th class=""><u>{{ getTotalAverageDamage() }}</u></th>
+            </tr>
+            <tr>
+                <th colspan="2">Celk. průměrné zranění:</th>
+                <th class="highlight-text"><u>{{ getTotalAverageDamage() }}</u></th>
+            </tr>
+            </tfoot>
+        </table>
 
 
-            <h4>Pomocná tabulka pro zjištění postihu síly při držení offhand zbraně</h4>
-            <p>
-            Pokud útočník drží v hlavní ruce jednoruční zbraň, tak se ke zranění aplikuje celý modifikátor síly útočníka.
+        <h4>Pomocná tabulka pro zjištění postihu síly při držení offhand zbraně</h4>
+        <p>
+            Pokud útočník drží v hlavní ruce jednoruční zbraň, tak se ke zranění aplikuje celý modifikátor síly
+            útočníka.
             Tedy má-li útočník sílu 22, přidá se ke zranění 6 bodů. V případě offhand zbraně je však ke zranění
             přidaná pouze polovina modifikátoru síly, tedy ze síly 22 by to byly jen 3 body. Pokud tedy používáte
             zbraň v druhé ruce, přidejte si do výše uvedené tabulky ručně postih síly.
-            </p>
-            <table>
-                <colgroup>
-                    <col style="width: 33.3333%;" />
-                    <col style="width: 33.3333%;" />
-                    <col style="width: 33.3333%;" />
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>Utoků za kolo</th>
-                    <th>Z toho off-hand útoků</th>
-                    <th>Postih síly za offhand zbraň</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>6</td>
-                    <td>2</td>
-                    <td>1/6 x Mod. síly</td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td>2</td>
-                    <td>1/7 x Mod. síly</td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>2</td>
-                    <td>1/8 x Mod. síly</td>
-                </tr>
-                </tbody>
-            </table>
+        </p>
+        <table>
+            <colgroup>
+                <col style="width: 33.3333%;"/>
+                <col style="width: 33.3333%;"/>
+                <col style="width: 33.3333%;"/>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>Utoků za kolo</th>
+                <th>Z toho off-hand útoků</th>
+                <th>Postih síly za offhand zbraň</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>6</td>
+                <td>2</td>
+                <td>1/6 x Mod. síly</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>2</td>
+                <td>1/7 x Mod. síly</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>2</td>
+                <td>1/8 x Mod. síly</td>
+            </tr>
+            </tbody>
+        </table>
 
 
-            <h3>Zranění s kritickým úderem</h3>
-            <p>
+        <h3>Zranění s kritickým úderem</h3>
+        <p>
             Kritický úder zvedá základní zranění o nějakou procentuální část. Nezvedá však např. sneak attack.
-            </p>
-            <table>
-                <colgroup>
-                    <col style="width: 25%;" />
-                    <col style="width: 8.33333%;" />
-                    <col style="width: 16.66666%;" />
-                    <col style="width: 16.66666%;" />
-                    <col style="width: 16.66666%;" />
-                    <col style="width: 16.66666%;" />
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>Rozsah </br> kritického <i class="fa-regular fa-circle-question"
-                                                   title='Např. kukri bez featu Imrpoved Critical má rozsah "18-20"'></i>
-                    </th>
-                    <th>
-                        - 20 / x
-                    </th>
-                    <th>Násobitel </br> kritického
-                        <i class="fa-regular fa-circle-question"
-                           title='Např. kukri má "x2"'></i>
-                    </th>
-                    <th>
-                        Šance na </br>kritický [%]
-                        <i class="fa-regular fa-circle-question"
-                           title='Kolik procent úderů bude mít v průměru kritický.'></i>
-                    </th>
-                    <th>
-                        Zvýšení </br> základního zranění [%] <i class="fa-regular fa-circle-question"
-                                                                title='Např. kritický pro kukri "18-20/x2" zvedne základní průměrné zranění o 15%.'></i>
-                    </th>
-                    <th>
-                        Celkové </br> průměrné zranění
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        <input type="number" v-model="criticalRange">
-                    </td>
-                    <td>
-                        - 20 / x
-                    </td>
-                    <td>
-                        <input type="number" v-model="criticalMultipl"></td>
-                    <td>
-                        {{ calculateCriticalChancePercentage(criticalRange) * 100 }} %
-                    </td>
-                    <td>
-                        {{ roundNumber(calculateCriticalTotalDamageIncreasePercent(criticalRange, criticalMultipl) * 100, 1) }}
-                        %
-                    </td>
-                    <td>
-                        <u><b>{{ roundNumber(getTotalAverageDamageIncludingCritical(), 1) }}</b></u>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <h3>Zranění se silným kritickým</h3>
-            <p>
+        </p>
+        <table>
+            <colgroup>
+                <col style="width: 50%;"/>
+                <col style="width: 50%;"/>
+            </colgroup>
+            <thead>
+
+            <tr>
+                <th>Atribut
+                </th>
+                <th>
+                    Hodnota
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+
+
+            <tr>
+                <td>
+                    Rozsah a násobitel kritického úderu <i class="fa-regular fa-circle-question"
+                                                           title='Např. kukri bez featu Imrpoved Critical má rozsah "18-20"'></i>
+                </td>
+                <td>
+                    <div class="row" style="align-items: center">
+                        <div class="col">
+                            <input type="number" v-model="criticalRange">
+                        </div>
+                        <div class="col-1">
+                            &nbsp;-&nbsp;20&nbsp;x&nbsp;
+                        </div>
+                        <div class="col">
+                            <input type="number" v-model="criticalMultipl">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Šance na kritický do sláměného panáka
+                    <i class="fa-regular fa-circle-question"
+                       title='Kolik procent úderů bude mít v průměru kritický.'></i>
+                </td>
+                <td>
+                    {{ calculateCriticalChancePercentage(criticalRange) * 100 }} %
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Zvýšení zranění <i class="fa-regular fa-circle-question"
+                                       title='Např. kritický pro kukri "18-20/x2" zvedne základní průměrné zranění o 15%.'></i>
+                </td>
+                <td>
+                    {{ roundNumber(calculateCriticalTotalDamageIncreasePercent(criticalRange, criticalMultipl) * 100, 1)
+                    }}
+                    %
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Celk. prům. zranění <i class="fa-regular fa-circle-question"
+                                           title='Např. kritický pro kukri "18-20/x2" zvedne základní průměrné zranění o 15%.'></i>
+                </td>
+                <td class="highlight-text">
+                    <u><b>{{ roundNumber(getTotalAverageDamageIncludingCritical(), 1) }}</b></u>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+        <h3>Zranění se silným kritickým</h3>
+        <p>
             Silné kritické zranění se přidává ke zranění v případě, že nastane kritický úder. Silný kritický může být
             přítomen
             jako vylepšení na zbrani, nebo ho můžeme získat z featu Overhelming Critical. Tyto se následně sčítají.
-            </p>
-            <table>
-                <colgroup>
-                    <col style="width: 50%;" />
-                    <col style="width: 50%;" />
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>Rozsah zranění</th>
-                    <th>Zranění udělené silným kritickým</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="massiveCritical, index in massiveCriticals">
-                    <td>
-                        <input type="text" v-model="massiveCriticals[index]">
-                    </td>
-                    <td>
-                        {{ calculateAverageDamageFromString(massiveCriticals[index]) }}
-                    </td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <th>Suma:</th>
-                    <th>{{ getMassiveCriticalsDamageSum() }}</th>
-                </tr>
-                <tr>
-                    <th>Celkové průměrné zranění:</th>
-                    <th><u>{{ roundNumber(getTotalAverageDamageIncludingCriticalAndMassiveCritical(), 1) }}</u></th>
-                </tr>
-                </tfoot>
-            </table>
+        </p>
+        <table>
+            <colgroup>
+                <col style="width: 50%;"/>
+                <col style="width: 50%;"/>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>Rozsah zranění</th>
+                <th>Průměrné zranění</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="massiveCritical, index in massiveCriticals">
+                <td>
+                    <input type="text" v-model="massiveCriticals[index]">
+                </td>
+                <td>
+                    {{ calculateAverageDamageFromString(massiveCriticals[index]) }}
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>Suma:</th>
+                <th>{{ getMassiveCriticalsDamageSum() }}</th>
+            </tr>
+            <tr>
+                <th>Celk. prům. zranění:</th>
+                <th class="highlight-text">
+                    <u>{{ roundNumber(getTotalAverageDamageIncludingCriticalAndMassiveCritical(), 1)
+                        }}</u></th>
+            </tr>
+            </tfoot>
+        </table>
 
-            <h3>Zranění se zákeřným útokem</h3>
-            <p>
+        <h3>Zranění se zákeřným útokem</h3>
+        <p>
             Zákeřný útok se přídává ke zranění, avšak není násoben v případě kritického zranění.
-            </p>
-            <table>
-                <colgroup>
-                    <col style="width: 35%;" />
-                    <col style="width: 15%;" />
-                    <col style="width: 50.3333%;" />
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>Zranění kritickým</th>
-                    <th></th>
-                    <th>Zranění udělené zákeřným</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        <input type="number" v-model="sneakAttack1d6Count">
-                    </td>
-                    <td>
-                        d6
-                    </td>
-                    <td>
-                        {{ getSneakAttackDamage() }}
-                    </td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <th>Celkové průměrné zranění:</th>
-                    <th></th>
-                    <th><u>{{ roundNumber(getTotalAverageDamageIncludingCriticalAndMassiveCriticalAndSneakAttack(), 1) }}</u></th>
-                </tr>
-                </tfoot>
-            </table>
+        </p>
+        <table>
+            <colgroup>
+                <col style="width: 50%;"/>
+                <col style="width: 50%;"/>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>Přidané zranění</th>
+                <th>Průměrné zranění</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <div class="row" style="align-items: center;">
+                        <div class="col">
+                            <input type="number" v-model="sneakAttack1d6Count">
+                        </div>
+                        <div class="col-1">
+                            &nbsp;d6
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    {{ getSneakAttackDamage() }}
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>Celk. prům. zranění:</th>
+                <th class="highlight-text">
+                    <u>{{ roundNumber(getTotalAverageDamageIncludingCriticalAndMassiveCriticalAndSneakAttack(), 1)
+                        }}</u></th>
+            </tr>
+            </tfoot>
+        </table>
 
 
-            <h3>Zranění za kolo do reálného soupeře</h3>
-            <table>
-                <colgroup>
-                    <col style="width: 50%;" />
-                    <col style="width: 50%;" />
-                </colgroup>
-                <thead>
-                <th>Atributy vašeho protivníka</th>
-                <th></th>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        Obranné číslo - AC
-                    </td>
-                    <td>
-                        <input type="number" v-model="oponentAc">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Redukce zranění <i class="fa-regular fa-circle-question"
-                                           title="Redukce zranění např. 3/- způsobí, že protivník sníží zrnanění každého úspěšného útoku o 3 body."></i>
-                    </td>
-                    <td>
-                        <input type="number" v-model="oponentDamageReduction">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Epický únik / Odrážení šípů <i class="fa-regular fa-circle-question"
-                                                       title='Epický únik způsobí, že 1. útok v každém kole nepřítele nikdy nezasáhne. Stejně tak funguje feat Arrow deflection.'></i>
+        <h3>Zranění za kolo do reálného soupeře</h3>
+        <table>
+            <colgroup>
+                <col style="width: 50%;"/>
+                <col style="width: 50%;"/>
+            </colgroup>
+            <thead>
+            <th>Atributy vašeho protivníka</th>
+            <th></th>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    Obranné číslo - AC
+                </td>
+                <td>
+                    <input type="number" v-model="oponentAc">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Redukce zranění <i class="fa-regular fa-circle-question"
+                                       title="Redukce zranění např. 3/- způsobí, že protivník sníží zrnanění každého úspěšného útoku o 3 body."></i>
+                </td>
+                <td>
+                    <input type="number" v-model="oponentDamageReduction">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Epický únik / Odrážení šípů <i class="fa-regular fa-circle-question"
+                                                   title='Epický únik způsobí, že 1. útok v každém kole nepřítele nikdy nezasáhne. Stejně tak funguje feat Arrow deflection.'></i>
 
-                    </td>
-                    <td>
-                        <input type="checkbox" v-model="oponentEpicDodge">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <table>
-                <colgroup>
-                    <col style="width: 25%;" />
-                    <col style="width: 25%;" />
-                    <col style="width: 25%;" />
-                    <col style="width: 25%;" />
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>
-                        Útok </br>za kolo
-                        <i class="fa-regular fa-circle-question"
-                           title='Např. bojovník s kukri a štítem bude mít celkem 4 útoky za kolo. Pokud bude největší AB mít 20, potom útoky budou mít AB 20, 15, 10, 5.
+                </td>
+                <td class="">
+                    <div class="row" style="height: 100%; align-items: center;">
+                        <div class="col" style="height: 100%;">
+                            <input type="checkbox" v-model="oponentEpicDodge" style="height: 100%;"/>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table>
+            <colgroup>
+                <col style="width: 25%;"/>
+                <col style="width: 25%;"/>
+                <col style="width: 25%;"/>
+                <col style="width: 25%;"/>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>
+                    Útok </br>za kolo
+                    <i class="fa-regular fa-circle-question"
+                       title='Např. bojovník s kukri a štítem bude mít celkem 4 útoky za kolo. Pokud bude největší AB mít 20, potom útoky budou mít AB 20, 15, 10, 5.
                    Monk ptočící pěstmi s aktivovaným featem "Flurry of Blows" bude mít útoků 7, a pokud bude mít 2 kamy bude to celkem útoků 9.'></i>
-                    </th>
-                    <th>
-                        AB</br>Vaši postavičky
-                    </th>
-                    <th>
-                        Šance </br>
-                        na zásah nepřítele
-                    </th>
-                    <th>
-                        Průměrné </br>
-                        zranění
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="inputAb, index in inputAbs" :key="index">
-                    <td>
-                        {{ index + 1 }}.
-                    </td>
-                    <td>
-                        <input type="number" v-model="inputAbs[index]"/>
-                    </td>
-                    <td>
-                        {{ roundNumber(calculateChanceToHitOpponent(oponentAc, inputAbs[index]) * 100, 1) }} %
-                    </td>
-                    <td>
+                </th>
+                <th>
+                    AB</br>Vaši postavičky
+                </th>
+                <th>
+                    Šance </br>
+                    na zásah nepřítele
+                </th>
+                <th>
+                    Průměrné </br>
+                    zranění
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="inputAb, index in inputAbs" :key="index">
+                <td>
+                    {{ index + 1 }}.
+                </td>
+                <td>
+                    <div class="row" style="align-items: center">
+                        <div class="col">
+                            <input type="number" v-model.number="inputAbs[index]"/>
+                        </div>
+
+                        <div v-if="index === 0" class="col-1">
+                           &nbsp;<button type="button" @click="incrementAllInputAbs(1)"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div  v-if="index === 0" class="col-1">
+                            &nbsp;<button type="button" @click="incrementAllInputAbs(-1)"><i class="fa-solid fa-minus"></i></button>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    {{ roundNumber(calculateChanceToHitOpponent(oponentAc, inputAbs[index]) * 100, 1) }} %
+                </td>
+                <td>
                     <span v-if="oponentEpicDodge && index === 0">
                         0
                     </span>
-                        <span v-else>
+                    <span v-else>
                         {{ roundNumber(calculateDamageToOpponent(oponentAc, inputAbs[index]), 1) }}
                     </span>
-                    </td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <th colspan="3">
-                        Suma:
-                    </th>
-                    <th>
-                        <u>{{ roundNumber(getTotalAverageDamagePerRoundToOponent(), 1) }}</u>
-                    </th>
-                </tr>
-                </tfoot>
-            </table>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th colspan="3">
+                    Suma:
+                </th>
+                <th class="highlight-text">
+                    <u>{{ roundNumber(getTotalAverageDamagePerRoundToOponent(), 1) }}</u>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
 
-            <h2>
-                Shrnutí
-            </h2>
+        <h2>
+            Shrnutí
+        </h2>
 
-            <table>
-                <body>
-                <tr>
-                    <td>
-                        Rozpis zranění na zbrani
-                    </td>
-                    <td>
-                        {{ inputDamages.filter((dmg, idx) => dmg[0] && idx <= 4).map(dmg => dmg[0] + " (" + dmg[1] + ")").join(", ")}}
-                        </br>
-                        {{ inputDamages.filter((dmg, idx) => dmg[0] && idx > 4).map(dmg => dmg[0] + " (" + dmg[1] + ")").join(", ")}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Přidané zranění
-                    </td>
-                    <td>
-                        kritický {{ criticalRange }}-20/x{{ criticalMultipl }}, masivní kritický
-                        +{{ getMassiveCriticalsDamageSum() }}
-                        {{ sneakAttack1d6Count != 0 ? ", zákeřný " + getSneakAttackDamage() : ""}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        AB za kolo
-                    </td>
-                    <td>
-                        +{{ inputAbs.filter(iAbs => iAbs > 0).join(", +")}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Součet zranění na zbrani
-                    </td>
-                    <td>
-                        {{ getTotalAverageDamage() }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Zranění vč. kritického
-                    </td>
-                    <td>
-                        {{ roundNumber(getTotalAverageDamageIncludingCritical(), 1) }}
-                    </td>
-                </tr>
-                <tr v-if="getMassiveCriticalsDamageSum() != 0">
-                    <td>
-                        Zranění vč. masivních kritických
-                    </td>
-                    <td>
-                        {{ roundNumber(getTotalAverageDamageIncludingCriticalAndMassiveCritical(), 1) }}
-                    </td>
-                </tr>
-                <tr v-if="getSneakAttackDamage() != 0">
-                    <td>
-                        Zranění vč. zákeřného útoku
-                    </td>
-                    <td>
-                        {{ roundNumber(getTotalAverageDamageIncludingCriticalAndMassiveCriticalAndSneakAttack(), 1) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Zranění za kolo ( AC
-                        {{ oponentAc }}{{ oponentEpicDodge ? ", únik" : ""}}{{ oponentDamageReduction > 0 ? ", redu. " + oponentDamageReduction + "/-" : ""}}
-                        )
-                    </td>
-                    <td>
-                        {{ roundNumber(getTotalAverageDamagePerRoundToOponent(), 1) }}
-                    </td>
-                </tr>
-                </body>
-            </table>
+        <table>
+            <thead>
+            <tr>
+                <th>
+                    Atribut
+                </th>
+                <th>
+                    Hodnota
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    Rozpis zranění na zbrani
+                </td>
+                <td>
+                    {{ inputDamages.filter((dmg, idx) => dmg[0] && idx <= 4).map(dmg => dmg[0] + " (" + dmg[1] + ")").join(", ")}}
+                    </br>
+                    {{ inputDamages.filter((dmg, idx) => dmg[0] && idx > 4).map(dmg => dmg[0] + " (" + dmg[1] + ")").join(", ")}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Přidané zranění
+                </td>
+                <td>
+                    kritický {{ criticalRange }}-20/x{{ criticalMultipl }}, masivní kritický
+                    +{{ getMassiveCriticalsDamageSum() }}
+                    {{ sneakAttack1d6Count != 0 ? ", zákeřný " + getSneakAttackDamage() : ""}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    AB za kolo
+                </td>
+                <td>
+                    +{{ inputAbs.filter(iAbs => iAbs > 0).join(", +")}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Součet zranění na zbrani
+                </td>
+                <td>
+                    {{ getTotalAverageDamage() }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Zranění vč. kritického
+                </td>
+                <td>
+                    {{ roundNumber(getTotalAverageDamageIncludingCritical(), 1) }}
+                </td>
+            </tr>
+            <tr v-if="getMassiveCriticalsDamageSum() != 0">
+                <td>
+                    Zranění vč. masivních kritických
+                </td>
+                <td>
+                    {{ roundNumber(getTotalAverageDamageIncludingCriticalAndMassiveCritical(), 1) }}
+                </td>
+            </tr>
+            <tr v-if="getSneakAttackDamage() != 0">
+                <td>
+                    Zranění vč. zákeřného útoku
+                </td>
+                <td>
+                    {{ roundNumber(getTotalAverageDamageIncludingCriticalAndMassiveCriticalAndSneakAttack(), 1) }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Zranění za kolo ( AC
+                    {{ oponentAc
+                    }}{{ oponentEpicDodge ? ", únik" : ""}}{{ oponentDamageReduction > 0 ? ", redu. " + oponentDamageReduction + "/-" : ""}}
+                    )
+                </td>
+                <td>
+                    {{ roundNumber(getTotalAverageDamagePerRoundToOponent(), 1) }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-            <h2>Závěrem</h2>
-            <h3>Autor</h3>
-            <p>
-                Jiří Kačírek, email: kacirek.j@gmail.com
-            </p>
-            <p>
-                Přezdívka: Jurass17, postavičky na Démoně Ferda Lumpajs, Johny Trýzel, John Kukačka, a další :-)
-            </p>
-            <h3>Licence</h3>
-            <p>
-                Veškeré zdrojové kódy jsou přístupné ve "View Page Source" nebo na Github.com. Software můžete dále
-                modifikovat a šířit, nezapomeňte mě však prosím uvézt jako autora či spoluautora.
-                Děkuji.
-            </p>
-            <div class="height-grid"></div>
+        <h2>Závěrem</h2>
+        <h3>Omezení</h3>
+        <h4>Confirmation roll</h4>
+        <p>
+            <img src="favicon-black.png" align="right" style="height: calc(var(--grid)*4.5);"/>
+            V kalkuilačce se vypočítává zranění udílené kritickým úderem bez tzv. "Confirmation roll", tedy z tohoto
+            důvodu
+            výpočet
+            zranění z kritického je 100% přesný v případě mlácení do sláměného panáka, ale čím vyšší má oponent AC, tím
+            více se
+            projeví
+            nepřesnost kvůli chybějícímu Confirmation roll.
+        </p>
+        <p>
+            Ad absurdum, potřebujeme-li hodit kostkou 19-20 abychom obránce zasáhli, tak toto má rovněž i drastický
+            dopad na
+            udílení kritického zranění: Nejprve totiž potřebujeme hodit 19-20, abychom vůbec zasáhli, a potom
+            potřebujeme znovu
+            hodit 19-20 (Confirmation roll), abychom udělali kritický úder.
+        </p>
+        <p>
+            Toto značně snižuje pravděpodobnost udělení kritického do oponenta s vysokým AC. Kalkulačka toto pro zachování
+            jednoduchosti nereflektuje.
+        </p>
+
+        <h3>Autor</h3>
+        <p>
+            Jiří Kačírek, email: kacirek.j@gmail.com
+        </p>
+        <p>
+            Přezdívka: Jurass17, jednou za čas hraju na Arkhalii a Demoně.
+        </p>
+        <h3>Licence</h3>
+        <p>
+            Veškeré zdrojové kódy jsou přístupné ve "View Page Source" nebo na Github.com. Software můžete dále
+            modifikovat a šířit, nezapomeňte mě však prosím uvézt jako autora či spoluautora.
+            Děkuji.
+        </p>
+        <div class="height-grid"></div>
+        <div class="height-grid"></div>
+        <p style="text-align: center">
+        </p>
+        <div class="height-grid"></div>
+
     </article>
 </div>
 
@@ -575,133 +683,140 @@
 </body>
 
 <script>
-    let app = new Vue({
-        el: '#vuaApp',
-        data: {
-            inputDamages: [["6", "Mod. síly"], ["-1", "Off-hand postih síly"], ["1-4", "Kukri"], ["1-8", "Element"], ["2", "Spec. na zbraň"], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""]],
-            inputAbs: [20, 15, 10, 5, 20, 15, 0, 0, 0, 0],
-            massiveCriticals: ["1-8", "", ""],
-            sneakAttack1d6Count: 0,
-            criticalRange: 15,
-            criticalMultipl: 2,
-            criticalChangePercent: 0,
-            oponentAc: 30,
-            oponentDamageReduction: 0,
-            oponentEpicDodge: false,
-        },
-        methods: {
+  let app = new Vue({
+    el: '#vuaApp',
+    data: {
+      inputDamages: [["6", "Mod. síly"], ["-1", "Off-hand postih síly"], ["1-4", "Kukri"], ["1-8", "Element"], ["2", "Spec. na zbraň"], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""]],
+      inputAbs: [20, 15, 10, 5, 20, 15, null, null, null, null],
+      massiveCriticals: ["1-8", "", ""],
+      sneakAttack1d6Count: 0,
+      criticalRange: 15,
+      criticalMultipl: 2,
+      criticalChangePercent: 0,
+      oponentAc: 30,
+      oponentDamageReduction: 0,
+      oponentEpicDodge: false,
+    },
+    methods: {
 
-            /**
-             * Getters (parameter-less methods)
-             */
+      /**
+       * Getters (parameter-less methods)
+       */
 
-            getTotalAverageDamage() {
-                let sum = 0;
-                for (damage of this.inputDamages) {
-                    sum += this.calculateAverageDamageFromString(damage[0]);
-                }
-                return sum;
-            },
-            getTotalAverageDamageIncludingCritical() {
-                return this.getTotalAverageDamage() * (1 +
-                    this.calculateCriticalTotalDamageIncreasePercent(this.criticalRange, this.criticalMultipl))
-            },
-            getTotalAverageDamageIncludingCriticalAndMassiveCritical() {
-                let sum = this.getTotalAverageDamageIncludingCritical();
-                sum += this.getMassiveCriticalsDamageSum() * this.calculateCriticalChancePercentage(this.criticalRange);
-                return sum;
-            },
-            getTotalAverageDamageIncludingCriticalAndMassiveCriticalAndSneakAttack() {
-                return this.getSneakAttackDamage() + this.getTotalAverageDamageIncludingCriticalAndMassiveCritical();
-            },
-            getTotalAverageDamageIncludingSneakAttack() {
-                return this.getSneakAttackDamage() + this.getTotalAverageDamage();
-            },
-            getMassiveCriticalsDamageSum() {
-                return this.massiveCriticals.map(m => this.calculateAverageDamageFromString(m))
-                    .reduce((sum, a) => sum + a, 0);
-            },
-            getSneakAttackDamage() {
-                return (this.sneakAttack1d6Count * 1 + 6 * this.sneakAttack1d6Count) / 2;
-            },
-            getTotalAverageDamagePerRoundToOponent() {
-                let sumOfDamagesPerRound = 0;
-                for (const [index, inpuptAb] of this.inputAbs.entries()) {
-                    if (index == 0 && this.oponentEpicDodge) {
-                        continue;
-                    }
+      getTotalAverageDamage() {
+        let sum = 0;
+        for (damage of this.inputDamages) {
+          sum += this.calculateAverageDamageFromString(damage[0]);
+        }
+        return sum;
+      },
+      getTotalAverageDamageIncludingCritical() {
+        return this.getTotalAverageDamage() * (1 +
+          this.calculateCriticalTotalDamageIncreasePercent(this.criticalRange, this.criticalMultipl))
+      },
+      getTotalAverageDamageIncludingCriticalAndMassiveCritical() {
+        let sum = this.getTotalAverageDamageIncludingCritical();
+        sum += this.getMassiveCriticalsDamageSum() * this.calculateCriticalChancePercentage(this.criticalRange);
+        return sum;
+      },
+      getTotalAverageDamageIncludingCriticalAndMassiveCriticalAndSneakAttack() {
+        return this.getSneakAttackDamage() + this.getTotalAverageDamageIncludingCriticalAndMassiveCritical();
+      },
+      getTotalAverageDamageIncludingSneakAttack() {
+        return this.getSneakAttackDamage() + this.getTotalAverageDamage();
+      },
+      getMassiveCriticalsDamageSum() {
+        return this.massiveCriticals.map(m => this.calculateAverageDamageFromString(m))
+          .reduce((sum, a) => sum + a, 0);
+      },
+      getSneakAttackDamage() {
+        return (this.sneakAttack1d6Count * 1 + 6 * this.sneakAttack1d6Count) / 2;
+      },
+      getTotalAverageDamagePerRoundToOponent() {
+        let sumOfDamagesPerRound = 0;
+        for (const [index, inpuptAb] of this.inputAbs.entries()) {
+          if (index == 0 && this.oponentEpicDodge) {
+            continue;
+          }
 
-                    const damage = this.calculateDamageToOpponent(this.oponentAc, inpuptAb);
+          const damage = this.calculateDamageToOpponent(this.oponentAc, inpuptAb);
 
-                    sumOfDamagesPerRound += damage;
-                }
-                return sumOfDamagesPerRound;
-            },
+          sumOfDamagesPerRound += damage;
+        }
+        return sumOfDamagesPerRound;
+      },
 
-            /**
-             * Methods
-             */
+      /**
+       * Methods
+       */
 
-            calculateCriticalTotalDamageIncreasePercent(criticalRange, criticalMultipl) {
-                const chance = this.calculateCriticalChancePercentage(criticalRange);
-                return ((1 - chance) + (chance * criticalMultipl)) - 1;
-            },
-            calculateCriticalChancePercentage(criticalRange) {
-                return (20 - criticalRange + 1) / 20
-            },
-            calculateDamageToOpponent(oponentAc, attackerAb) {
-                const isOpponentAcHigherThan20 = (oponentAc - attackerAb) > 20; // When this happens, then there can't happen critical
-                const chanceToHit = this.calculateChanceToHitOpponent(this.oponentAc, attackerAb);
-                let damage = isOpponentAcHigherThan20
-                    ? this.getTotalAverageDamageIncludingSneakAttack()
-                    : this.getTotalAverageDamageIncludingCriticalAndMassiveCriticalAndSneakAttack();
-                damage -= this.oponentDamageReduction;
-                return damage * chanceToHit;
-            },
-            calculateChanceToHitOpponent(oponentAc, attackerAb) {
-                /**
-                 * Scenario:
-                 * 1. Attacker AB 20, Defender AC 30 -> 21,22,23,24,25,26,27,28,29 is miss, chance to hit is 55%
-                 * 2. Attacker AB 20, Defender AC 20 -> 21 is miss, chance to hit is 95%
-                 * 3. Attacker AB 20, Defender AC 40 -> all except 20 is miss, chance to hit is 5%
-                 * 4. Attacker AB 20, Defender AC 90 -> all except 20 is miss, chance to hit is 5%
-                 * 5. Attacker AB 20, Defender AC 10 -> 1 is miss, chance to to hit 95%
-                 *
-                 * Conclusion formulae:
-                 *
-                 * (20 - (AB - AC) + 1) / 20 = hit chance
-                 * but boundaries : max hit chance is 95%, min hit chance is 5%
-                 */
-                if (attackerAb <= 0) {
-                    return 0;
-                }
-                let hitChance = (20 - (oponentAc - attackerAb) + 1) / 20;
-                hitChance = hitChance > 0.95 ? 0.95 : hitChance;
-                hitChance = hitChance < 0.05 ? 0.05 : hitChance;
+      calculateCriticalTotalDamageIncreasePercent(criticalRange, criticalMultipl) {
+        const chance = this.calculateCriticalChancePercentage(criticalRange);
+        return ((1 - chance) + (chance * criticalMultipl)) - 1;
+      },
+      calculateCriticalChancePercentage(criticalRange) {
+        return (20 - criticalRange + 1) / 20
+      },
+      calculateDamageToOpponent(oponentAc, attackerAb) {
+        const isOpponentAcHigherThan20 = (oponentAc - attackerAb) > 20; // When this happens, then there can't happen critical
+        const chanceToHit = this.calculateChanceToHitOpponent(this.oponentAc, attackerAb);
+        let damage = isOpponentAcHigherThan20
+          ? this.getTotalAverageDamageIncludingSneakAttack()
+          : this.getTotalAverageDamageIncludingCriticalAndMassiveCriticalAndSneakAttack();
+        damage -= this.oponentDamageReduction;
+        return damage * chanceToHit;
+      },
+      calculateChanceToHitOpponent(oponentAc, attackerAb) {
+        /**
+         * Scenario:
+         * 1. Attacker AB 20, Defender AC 30 -> 21,22,23,24,25,26,27,28,29 is miss, chance to hit is 55%
+         * 2. Attacker AB 20, Defender AC 20 -> 21 is miss, chance to hit is 95%
+         * 3. Attacker AB 20, Defender AC 40 -> all except 20 is miss, chance to hit is 5%
+         * 4. Attacker AB 20, Defender AC 90 -> all except 20 is miss, chance to hit is 5%
+         * 5. Attacker AB 20, Defender AC 10 -> 1 is miss, chance to to hit 95%
+         *
+         * Conclusion formulae:
+         *
+         * (20 - (AB - AC) + 1) / 20 = hit chance
+         * but boundaries : max hit chance is 95%, min hit chance is 5%
+         */
+        if (attackerAb <= 0) {
+          return 0;
+        }
+        let hitChance = (20 - (oponentAc - attackerAb) + 1) / 20;
+        hitChance = hitChance > 0.95 ? 0.95 : hitChance;
+        hitChance = hitChance < 0.05 ? 0.05 : hitChance;
 
-                return hitChance;
-            },
-            calculateAverageDamageFromString(damageString) {
-                console.log("called")
-                if (!damageString) {
-                    return 0;
-                }
-                if (!damageString.includes("-") || damageString.charAt(0) === '-') {
-                    return Number(damageString);
-                }
-                const parts = damageString.split("-");
-                const part0 = Number(parts[0]);
-                const part1 = Number(parts[1]);
+        return hitChance;
+      },
+      calculateAverageDamageFromString(damageString) {
+        if (!damageString) {
+          return 0;
+        }
+        if (!damageString.includes("-") || damageString.charAt(0) === '-') {
+          return Number(damageString);
+        }
+        const parts = damageString.split("-");
+        const part0 = Number(parts[0]);
+        const part1 = Number(parts[1]);
 
-                return (part0 + part1) / 2;
-            },
-            roundNumber(number, digits) {
-                return Math.round(number * 10) / 10;
-            }
-        },
-        async beforeMount() {
-        },
-    });
+        return (part0 + part1) / 2;
+      },
+      roundNumber(number, digits) {
+        return Math.round(number * 10) / 10;
+      },
+      incrementAllInputAbs(value=1) {
+        for(let i = 0; i < this.inputAbs.length; i++) {
+          if(!this.inputAbs[i] && this.inputAbs[i] !== 0) {
+            continue;
+          }
+          this.$set(this.inputAbs, i, this.inputAbs[i] + value);
+        }
+      }
+    },
+    async beforeMount() {
+    },
+  });
 
 
 </script>
